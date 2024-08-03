@@ -257,7 +257,7 @@ get_vc(model_path, 0)
 
 try:
     start_time = time.time()
-    vc_single(
+    tgt_sr, audio_opt = vc_single(
         sid=0,
         input_audio_path=audio_input_path,
         f0_up_key=f0up_key,
@@ -272,7 +272,12 @@ try:
         split_audio=split_audio,
         f0autotune=f0autotune,
     )
-
+    wavfile.write(
+        audio_output_path,
+        tgt_sr,
+        audio_opt
+    )
+    
     if clean_audio == "True":
         cleaned_audio = remove_audio_noise(audio_output_path, clean_strength)
         if cleaned_audio is not None:
