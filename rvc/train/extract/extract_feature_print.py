@@ -9,7 +9,7 @@ import numpy as np
 
 import logging
 
-logging.getLogger("fairseq").setLevel(logging.WARNING)
+logging.getLogger("fairseq").setLevel(logging.DEBUG)
 
 device = sys.argv[1]
 n_parts = int(sys.argv[2])
@@ -21,7 +21,6 @@ else:
     i_gpu, exp_dir = sys.argv[4], sys.argv[5]
     os.environ["CUDA_VISIBLE_DEVICES"] = str(i_gpu)
     version, is_half = sys.argv[6], bool(sys.argv[7])
-
 
 def forward_dml(ctx, x, scale):
     ctx.scale = scale
@@ -56,13 +55,16 @@ models, saved_cfg, task = fairseq.checkpoint_utils.load_model_ensemble_and_task(
     [model_path],
     suffix="",
 )
+
+
 model = models[0]
 model = model.to(device)
+
 if device not in ["mps", "cpu"]:
     model = model.half()
 model.eval()
-
 todo = sorted(os.listdir(wav_path))[i_part::n_parts]
+
 n = max(1, len(todo) // 10)
 
 if len(todo) == 0:

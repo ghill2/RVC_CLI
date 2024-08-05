@@ -21,7 +21,7 @@ try:
         file_path = os.path.join(feature_dir, name)
         phone = np.load(file_path)
         npys.append(phone)
-
+    
     big_npy = np.concatenate(npys, axis=0)
 
     big_npy_idx = np.arange(big_npy.shape[0])
