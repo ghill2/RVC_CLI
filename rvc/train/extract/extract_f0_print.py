@@ -178,15 +178,16 @@ class FeatureInput:
     def process(self, paths, f0_method, hop_length):
         
         inp_path, opt_path1, opt_path2 = paths
+        
         try:
-            print(f"Processing {inp_path}")
             if os.path.exists(opt_path1 + ".npy") and os.path.exists(
                 opt_path2 + ".npy"
             ):
                 print("Nothing to do")
                 return
             
-            
+            print(f"Processing {inp_path}")
+
             feature_pit = self.compute_f0(inp_path, f0_method, hop_length)
             np.save(
                 opt_path2,

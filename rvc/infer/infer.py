@@ -20,11 +20,9 @@ from rvc.lib.infer_pack.models import (
 )
 from rvc.configs.config import Config
 
-logging.getLogger("fairseq").setLevel(logging.DEBUG)
+logging.getLogger("fairseq").setLevel(logging.WARNING)
 
 config = Config()
-config.device = "cpu"
-config.is_half = False
 hubert_model = None
 
 
@@ -230,13 +228,10 @@ def get_vc(weight_root, sid):
     del net_g.enc_q
     print(net_g.load_state_dict(cpt["weight"], strict=False))
     net_g.eval().to(config.device)
-    
-    
     if config.is_half:
         net_g = net_g.half()
     else:
         net_g = net_g.float()
-        
     vc = VC(tgt_sr, config)
     n_spk = cpt["config"][-3]
 
@@ -262,7 +257,6 @@ get_vc(model_path, 0)
 
 try:
     start_time = time.time()
-    
     tgt_sr, audio_opt = vc_single(
         sid=0,
         input_audio_path=audio_input_path,
