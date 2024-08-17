@@ -23,6 +23,17 @@ from rvc.configs.config import Config
 logging.getLogger("fairseq").setLevel(logging.WARNING)
 
 config = Config()
+
+####################################
+"""
+CUDE/ROCm: in 174.96 seconds.
+CPU in 88.64 seconds.
+Changed inferring to use CPU:
+"""
+config.device = "cpu"
+config.is_half = False
+####################################
+
 hubert_model = None
 
 
